@@ -1,0 +1,38 @@
+{
+  "name": "serverless-kintone",
+  "version": "1.0.0",
+  "description": "Serverless plugin to access to kintone",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryokdy/serverless-kintone.git"
+  },
+  "author": "ryokdy",
+  "license": "MIT",
+  "keywords": [
+    "serverless",
+    "kintone",
+    "serverless plugin"
+  ],
+  "bugs": {
+    "url": "https://github.com/ryokdy/serverless-kintone/issues"
+  },
+  "homepage": "https://github.com/ryokdy/serverless-kintone#readme",
+  "dependencies": {
+    "request": "^2.79.0",
+    "fs-extra": "^1.0.0",
+    "bluebird": "^3.4.6"
+  },
+  "devDependencies": {
+    "eslint": "3.12.2",
+    "eslint-config-standard": "6.2.1",
+    "eslint-plugin-mocha": "4.8.0",
+    "eslint-plugin-promise": "3.4.0",
+    "eslint-plugin-standard": "2.0.1",
+    "istanbul": "0.4.5",
+    "mocha": "3.2.0"
+  }
+}
