@@ -32,7 +32,7 @@ plugins:
     kintone:
       - name: test_app
         domain: example.cybozu.com
-        api_key: ${env:KINTONE_API_KEY}
+        api_token: ${env:KINTONE_API_TOKEN}
 ```
 
 ### Supported runtimes
