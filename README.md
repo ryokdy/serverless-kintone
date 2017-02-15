@@ -33,8 +33,6 @@ plugins:
       - name: test_app
         domain: example.cybozu.com
         api_key: ${env:KINTONE_API_KEY}
-        basic_user:
-        basic_password:
 ```
 
 ### Supported runtimes

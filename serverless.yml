@@ -79,5 +79,3 @@ custom:
     - name: test_app
       domain: example.cybozu.com
       api_token: ${env:KINTONE_API_TOKEN}
-      basic_user:
-      basic_password:
