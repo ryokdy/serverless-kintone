@@ -1,14 +1,17 @@
 'use strict';
 
-const kintone = require('kintone');
+const Kintone = require('kintone');
 
 module.exports.hello = (event, context, callback) => {
-  kintone.api('test').then((txt) => {
+  const kintone = new Kintone('test_app');
+  const params = {
+    app: 6
+  };
+  kintone.get(params).then((res) => {
     const response = {
       statusCode: 200,
       body: JSON.stringify({
-        message: txt,
-        input: event,
+        records: res.records
       }),
     };
 

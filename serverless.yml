@@ -76,8 +76,8 @@ plugins:
 
 custom:
   kintone:
-    - app: test_app
-      domain: demo.cybozu.com
-      api_key: ${env:KINTONE_API_KEY}
+    - name: test_app
+      domain: example.cybozu.com
+      api_token: ${env:KINTONE_API_TOKEN}
       basic_user:
       basic_password:
