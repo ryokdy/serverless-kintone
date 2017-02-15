@@ -6,10 +6,10 @@ const request = require('request');
 
 module.exports = class Kintone {
   constructor(opts) {
-    opts = opts || {};
-    if (opts.name) {
-      opts = this.getConfig(opts.name);
+    if (typeof opts === 'string') {
+      opts = this.getConfig(opts);
     }
+    opts = opts || {};
     this.domain = opts.domain;
     if (!this.domain.match('\\.')) {
         this.domain += '.cybozu.com';

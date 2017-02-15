@@ -1,6 +1,6 @@
 {
   "name": "serverless-kintone",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Serverless plugin to access to kintone",
   "main": "index.js",
   "scripts": {
