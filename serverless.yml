@@ -11,11 +11,12 @@
 #
 # Happy Coding!
 
-service: kintone-test
+service: kintone-sample
 
 provider:
   name: aws
   runtime: nodejs4.3
+  region: ap-northeast-1
 
 # you can overwrite defaults here
 #  stage: dev
@@ -75,7 +76,7 @@ plugins:
 
 custom:
   kintone:
-    test_app:
+    - app: test_app
       domain: demo.cybozu.com
       api_key: ${env:KINTONE_API_KEY}
       basic_user:

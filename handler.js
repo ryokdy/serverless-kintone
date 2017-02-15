@@ -3,7 +3,7 @@
 const kintone = require('kintone');
 
 module.exports.hello = (event, context, callback) => {
-  slscrypt.get('test').then((txt) => {
+  kintone.api('test').then((txt) => {
     const response = {
       statusCode: 200,
       body: JSON.stringify({
