@@ -12,13 +12,6 @@ module.exports = class ServerlessKintone {
     this.serverless = serverless;
     this.options = options || {};
 
-    this.commands = {
-      deploy: {
-        lifecycleEvents: [
-          'resources',
-        ],
-      },
-    };
     Object.assign(this, validate, addLibraries, removeLibraries, setEnv);
 
     this.hooks = {
@@ -34,7 +27,7 @@ module.exports = class ServerlessKintone {
       'after:deploy:deploy': () => BbPromise.bind(this)
         .then(this.validate)
         .then(this.removeLibraries),
-      'before:deploy:resources': () => BbPromise.bind(this)
+      'before:deploy:compileFunctions': () => BbPromise.bind(this)
         .then(this.setEnv)
     };
   }

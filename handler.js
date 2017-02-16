@@ -7,7 +7,7 @@ module.exports.hello = (event, context, callback) => {
   const params = {
     app: 6
   };
-  kintone.get(params).then((res) => {
+  kintone.get('/k/v1/records', params).then((res) => {
     const response = {
       statusCode: 200,
       body: JSON.stringify({
