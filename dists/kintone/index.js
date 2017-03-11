@@ -163,7 +163,7 @@ module.exports = class Kintone {
       this.authHeaders.then((headers) => {
         Object.assign(options.headers, headers);
         request(options, function(err, response, body) {
-          if (err) {
+          if (err || response.statusCode != 200) {
             if (errback) errback(err);
             reject(err);
           } else {
@@ -196,7 +196,7 @@ module.exports = class Kintone {
       this.authHeaders.then((headers) => {
         Object.assign(options.headers, headers);
         request(options, function(err, response, body) {
-          if (err) {
+          if (err || response.statusCode != 200) {
             reject(err);
           } else {
             resolve(JSON.parse(body));
