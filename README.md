@@ -69,14 +69,14 @@ plugins:
 custom:
   kintone:
     - name: app1
-      domain: example.cybozu.com
+      domain: example.kintone.com
       api_token: <ENCRYPTED_API_TOKEN>
       encrypted: true
     - name: app2
-      domain: example.cybozu.com
+      domain: example.kintone.com
       user: user1
       password: <ENCRYPTED_PASSWORD>
-      basic_user: cybozu
+      basic_user: kintone_user
       basic_password: <ENCRYPTED_BASIC_PASSWORD>
       encrypted: true
 ```
