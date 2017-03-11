@@ -38,7 +38,7 @@ describe('setEnv()', () => {
       expect(env['KINTONE_NAME_1']).to.equal('test_app1');
       expect(env['KINTONE_DOMAIN_1']).to.equal('test1.cybozu.com');
       expect(env['KINTONE_API_TOKEN_1']).to.equal('key1');
-      expect(env['KINTONE_APP_2']).to.equal('test_app2');
+      expect(env['KINTONE_NAME_2']).to.equal('test_app2');
       expect(env['KINTONE_BASIC_USER_2']).to.equal('kintone2');
       expect(env['KINTONE_BASIC_PASSWORD_2']).to.equal('password2');
 

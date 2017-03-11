@@ -117,7 +117,7 @@ describe('ServerlessKintone', () => {
       const setEnvStub = sinon
         .stub(kintone, 'setEnv').returns(BbPromise.resolve());
 
-      return kintone.hooks['before:deploy:resources']().then(() => {
+      return kintone.hooks['before:deploy:compileFunctions']().then(() => {
         expect(setEnvStub.calledOnce).to.equal(true);
 
         kintone.setEnv.restore();

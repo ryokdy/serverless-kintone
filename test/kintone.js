@@ -16,10 +16,7 @@ describe('kintone', () => {
     });
 
     it('should initialize from environtment variables', () => {
-      const opts = {
-        name: 'test_app'
-      }
-      const kintone = new Kintone(opts);
+      const kintone = new Kintone('test_app');
       expect(kintone.domain).to.equal(`${process.env.KINTONE_DOMAIN_1}.cybozu.com`);
       expect(kintone.apiToken).to.equal(process.env.KINTONE_API_TOKEN_1);
     });
@@ -27,10 +24,7 @@ describe('kintone', () => {
 
   describe('#post()', () => {
     it('should post records', () => {
-      const opts = {
-        name: 'test_app'
-      }
-      const kintone = new Kintone(opts);
+      const kintone = new Kintone('test_app');
 
       const params = {
         app: 6,
@@ -47,10 +41,7 @@ describe('kintone', () => {
 
   describe('#put()', () => {
     it('should put records', () => {
-      const opts = {
-        name: 'test_app'
-      }
-      const kintone = new Kintone(opts);
+      const kintone = new Kintone('test_app');
 
       const params = {
         app: 6,
@@ -67,23 +58,17 @@ describe('kintone', () => {
 
   describe('#get()', () => {
     it('should get records', () => {
-      const opts = {
-        name: 'test_app'
-      }
-      const kintone = new Kintone(opts);
+      const kintone = new Kintone('test_app');
 
       return kintone.get('/k/v1/records', {app: 6}).then((res) => {
-        expect(res.records).not.to.equal(0);
+        expect(res.records.length).not.to.equal(0);
       });
     });
   });
 
   describe('#upload()', () => {
     it('should upload records', () => {
-      const opts = {
-        name: 'test_app'
-      }
-      const kintone = new Kintone(opts);
+      const kintone = new Kintone('test_app');
 
       return kintone.upload('/tmp/test.png').then((res) => {
         expect(res.fileKey).not.to.equal(0);
@@ -105,15 +90,13 @@ describe('kintone', () => {
 
   describe('#download()', () => {
     it('should upload records', () => {
-      const opts = {
-        name: 'test_app'
-      }
-      const kintone = new Kintone(opts);
+      const kintone = new Kintone('test_app');
 
       const params = {
         app: 6,
         id: 1,
       }
+
       return kintone.get('/k/v1/record', params).then((res) => {
         return res.record.file.value[0].fileKey;
       }).then((fileKey) => {

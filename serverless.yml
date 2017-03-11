@@ -76,6 +76,14 @@ plugins:
 
 custom:
   kintone:
-    - name: test_app
+    - name: test_app1
       domain: example.cybozu.com
-      api_token: ${env:KINTONE_API_TOKEN}
+      api_token: <ENCRYPTED_API_TOKEN>
+      encrypted: true
+    - name: test_app2
+      domain: example.cybozu.com
+      user: user1
+      password: <ENCRYPTED_PASSWORD>
+      basic_user: cybozu
+      basic_password: <ENCRYPTED_BASIC_PASSWORD>
+      encrypted: true

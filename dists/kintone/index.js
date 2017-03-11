@@ -3,6 +3,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 const request = require('request');
+const AWS = require('aws-sdk')
 
 module.exports = class Kintone {
   constructor(opts) {
@@ -10,6 +11,11 @@ module.exports = class Kintone {
       opts = this.getConfig(opts);
     }
     opts = opts || {};
+
+    if (!opts.domain) {
+      throw new TypeError('Domain parameter is not specified.');
+    }
+
     this.domain = opts.domain;
     if (!this.domain.match('\\.')) {
         this.domain += '.cybozu.com';
@@ -20,6 +26,7 @@ module.exports = class Kintone {
     this.password = opts.password;
     this.basicUser = opts.basicUser;
     this.basicPassword = opts.basicPassword;
+    this.encrypted = opts.encrypted;
 
     this.authHeaders = this.getAuthHeaders();
   }
@@ -33,31 +40,88 @@ module.exports = class Kintone {
         return {
           domain: process.env[`KINTONE_DOMAIN_${i}`],
           apiToken: process.env[`KINTONE_API_TOKEN_${i}`],
+          user: process.env[`KINTONE_USER_${i}`],
+          password: process.env[`KINTONE_PASSWORD_${i}`],
           basicUser: process.env[`KINTONE_BASIC_USER_${i}`],
           basicPassword: process.env[`KINTONE_BASIC_PASSWORD_${i}`],
+          encrypted: process.env[`KINTONE_ENCRYPTED_${i}`],
         };
       }
     }
     return {};
   }
 
+  decrypt(encrypted) {
+    if (!encrypted) {
+      return Promise.resolve(null);
+    }
+    const kms = new AWS.KMS();
+
+    const params = {
+      CiphertextBlob: new Buffer(encrypted, 'base64')
+    };
+
+    return new Promise((resolve, reject) => {
+      kms.decrypt(params, (err, data) => {
+        if (err) {
+          console.error(err);
+          reject();
+        } else {
+          resolve(data.Plaintext.toString('ascii'));
+        }
+      });
+    });
+  }
+
   getAuthHeaders() {
+    return new Promise((resolve, reject) => {
+      if (this.encrypted) {
+        var encryptedParams = [
+          this.password,
+          this.apiToken,
+          this.basicPassword,
+        ];
+
+        Promise.all(encryptedParams.map((encrypted) => {
+          return this.decrypt(encrypted);
+        })).then((params) => {
+          resolve(this._getAuthHeaders({
+            user: this.user,
+            password: params[0],
+            apiToken: params[1],
+            basicUser: this.basicUser,
+            basicPassword: params[2],
+          }));
+        });
+      } else {
+        resolve(this._getAuthHeaders({
+          user: this.user,
+          password: this.password,
+          apiToken: this.apiToken,
+          basicUser: this.basicUser,
+          basicPassword: this.basicPassword,
+        }));
+      }
+    });
+  }
+
+  _getAuthHeaders(opt) {
     var headers = {};
 
-    if (this.basicUser) {
-      let usernamePassword = this.basicUser + ':' + this.basicPassword;
+    if (opt.basicUser) {
+      let usernamePassword = opt.basicUser + ':' + opt.basicPassword;
       let base64 = new Buffer(usernamePassword).toString('base64');
       headers['Authorization'] = 'Basic ' + base64;
     }
 
-    if (this.user) {
-      let usernamePassword = this.user + ':' + this.password;
+    if (opt.user) {
+      let usernamePassword = opt.user + ':' + opt.password;
       let base64 = new Buffer(usernamePassword).toString('base64');
       headers['X-Cybozu-Authorization'] = base64;
     }
 
-    if (this.apiToken) {
-      headers['X-Cybozu-API-Token'] = this.apiToken;
+    if (opt.apiToken) {
+      headers['X-Cybozu-API-Token'] = opt.apiToken;
     }
 
     if (!headers.hasOwnProperty('X-Cybozu-API-Token') && !headers.hasOwnProperty('X-Cybozu-Authorization')) {
@@ -92,18 +156,19 @@ module.exports = class Kintone {
       body: JSON.stringify(data)
     };
 
-    Object.assign(options.headers, this.authHeaders);
-
     return new Promise((resolve, reject) => {
-      request(options, function(err, response, body) {
-        if (err) {
-          if (errback) errback(err);
-          reject(err);
-        } else {
-          let json = JSON.parse(body);
-          if (callback) callback(json);
-          resolve(json);
-        }
+      this.authHeaders.then((headers) => {
+        Object.assign(options.headers, headers);
+        request(options, function(err, response, body) {
+          if (err) {
+            if (errback) errback(err);
+            reject(err);
+          } else {
+            let json = JSON.parse(body);
+            if (callback) callback(json);
+            resolve(json);
+          }
+        });
       });
     });
   }
@@ -124,15 +189,16 @@ module.exports = class Kintone {
       }
     };
 
-    Object.assign(options.headers, this.authHeaders);
-
     return new Promise((resolve, reject) => {
-      request(options, function(err, response, body) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(JSON.parse(body));
-        }
+      this.authHeaders.then((headers) => {
+        Object.assign(options.headers, headers);
+        request(options, function(err, response, body) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(JSON.parse(body));
+          }
+        });
       });
     });
   }
@@ -144,18 +210,20 @@ module.exports = class Kintone {
       method: 'GET'
     };
 
-    Object.assign(options.headers, this.authHeaders);
-    var file = fs.createWriteStream(savePath);
-    request(options).pipe(file);
-
     return new Promise((resolve, reject) => {
-      file.on('finish', function() {
-        file.close(function() {
-          resolve(savePath);
+      this.authHeaders.then((headers) => {
+        Object.assign(options.headers, headers);
+        var file = fs.createWriteStream(savePath);
+        request(options).pipe(file);
+
+        file.on('finish', function() {
+          file.close(function() {
+            resolve(savePath);
+          });
         });
-      });
-      file.on('error', function(err) {
-        reject(err);
+        file.on('error', function(err) {
+          reject(err);
+        });
       });
     });
   }
