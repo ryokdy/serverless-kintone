@@ -26,7 +26,10 @@ module.exports = class Kintone {
     this.password = opts.password;
     this.basicUser = opts.basicUser;
     this.basicPassword = opts.basicPassword;
-    this.encrypted = opts.encrypted;
+    if (opts.encrypted) {
+      opts.encrypted = opts.encrypted.toUpperCase();
+    }
+    this.encrypted = (opts.encrypted == 'TRUE' || opts.encrypted == 'YES');
 
     this.authHeaders = this.getAuthHeaders();
   }
