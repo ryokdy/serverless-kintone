@@ -55,7 +55,7 @@ describe('ServerlessKintone', () => {
       const addLibrariesStub = sinon
         .stub(kintone, 'addLibraries').returns(BbPromise.resolve());
 
-      return kintone.hooks['before:deploy:function:deploy']().then(() => {
+      return kintone.hooks['before:deploy:function:packageFunction']().then(() => {
         expect(validateStub.calledOnce).to.equal(true);
         expect(addLibrariesStub.calledAfter(validateStub))
           .to.equal(true);

@@ -15,7 +15,7 @@ module.exports = class ServerlessKintone {
     Object.assign(this, validate, addLibraries, removeLibraries, setEnv);
 
     this.hooks = {
-      'before:deploy:function:deploy': () => BbPromise.bind(this)
+      'before:deploy:function:packageFunction': () => BbPromise.bind(this)
         .then(this.validate)
         .then(this.addLibraries),
       'after:deploy:function:deploy': () => BbPromise.bind(this)
