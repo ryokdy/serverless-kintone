@@ -1,9 +1,0 @@
-{
-  "node": true,
-  "esnext": true,
-  "asi" : true,
-  "eqnull": true,
-  "sub": true,
-  // suppless warnings "Regular parameters should not come after default parameters."
-  "-W138": true
-}
