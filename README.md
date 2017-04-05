@@ -13,7 +13,7 @@ Serverless plugin for integration with kintone.
 # Installation
 
 ```sh
-$ npm install serverless-kintone --save
+$ npm install https://github.com/ryokdy/serverless-kintone --save
 ```
 Sorry, This library is not published to npm registry yet. That will be soon.
 
