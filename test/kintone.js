@@ -8,11 +8,13 @@ describe('kintone', () => {
     it('should initialize from parameters', () => {
       const opts = {
         domain: process.env.KINTONE_DOMAIN_1,
-        apiToken: process.env.KINTONE_API_TOKEN_1
+        apiToken: process.env.KINTONE_API_TOKEN_1,
+        appId: process.env.KINTONE_APP_ID_1
       }
       const kintone = new Kintone(opts);
       expect(kintone.domain).to.equal(`${process.env.KINTONE_DOMAIN_1}.cybozu.com`);
       expect(kintone.apiToken).to.equal(process.env.KINTONE_API_TOKEN_1);
+      expect(kintone.appId).to.equal(process.env.KINTONE_APP_ID_1);
     });
 
     it('should initialize from environtment variables', () => {

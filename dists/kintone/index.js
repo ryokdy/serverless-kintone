@@ -35,10 +35,6 @@ module.exports = class Kintone {
     this.authHeaders = this.getAuthHeaders();
   }
 
-  appId() {
-    return this.appId;
-  }
-
   getConfig(name) {
     for (var i = 1; true; i++) {
       const config = process.env[`KINTONE_NAME_${i}`];
