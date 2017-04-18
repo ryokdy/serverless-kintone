@@ -47,6 +47,7 @@ module.exports = class Kintone {
           password: process.env[`KINTONE_PASSWORD_${i}`],
           basicUser: process.env[`KINTONE_BASIC_USER_${i}`],
           basicPassword: process.env[`KINTONE_BASIC_PASSWORD_${i}`],
+          id: process.env[`KINTONE_APP_ID_${i}`],
           encrypted: process.env[`KINTONE_ENCRYPTED_${i}`],
         };
       }
