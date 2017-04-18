@@ -170,6 +170,7 @@ module.exports = class Kintone {
         Object.assign(options.headers, headers);
         request(options, function(err, response, body) {
           if (err || response.statusCode != 200) {
+            if (!err) err = body;
             if (errback) errback(err);
             reject(err);
           } else {
