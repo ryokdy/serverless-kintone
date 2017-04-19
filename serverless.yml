@@ -78,6 +78,7 @@ custom:
   kintone:
     - name: test_app1
       domain: example.cybozu.com
+      app_id: 15
       api_token: <ENCRYPTED_API_TOKEN>
       encrypted: true
     - name: test_app2

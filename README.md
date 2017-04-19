@@ -29,8 +29,8 @@ You have to create the KMS key beforehand. See AWS document for details.
 
 http://docs.aws.amazon.com/kms/latest/developerguide/create-keys.html
 
-### 2. Create and attach IAM policy to your serverless service role  
-Policy example:  
+### 2. Create and attach IAM policy to your serverless service role
+Policy example:
 
 ```json
 {
@@ -50,7 +50,7 @@ Policy example:
 ```
 
 ### 3. Encrypt and save the secret to your serverless.yml.
-Command example:  
+Command example:
 
 ```sh
 $ aws kms encrypt --key-id alias/my-kms-key --region us-east-1 --plaintext YOUR_TOKEN
@@ -70,6 +70,7 @@ custom:
   kintone:
     - name: app1
       domain: example.kintone.com
+      app_id: 15
       api_token: <ENCRYPTED_API_TOKEN>
       encrypted: true
     - name: app2
@@ -88,7 +89,7 @@ custom:
 
 get, post, put, delete, upload and download methods are available.
 
-Code example:  
+Code example:
 
 - Node.js
 
@@ -100,7 +101,7 @@ const app = new Kintone('app1');
 
 module.exports.hello = (event, context, callback) => {
   const params = {
-    app: 6
+    app: app.appId
   };
   app.get('/k/v1/records', params).then((res) => {
     const response = {
@@ -122,7 +123,7 @@ module.exports.hello = (event, context, callback) => {
 const app = new Kintone('app1');
 
 const params = {
-  app: 6,
+  app: app.appId,
   id: 1,
 }
 app.get('/k/v1/record', params).then((res) => {
@@ -140,7 +141,7 @@ const app = new Kintone('app1');
 
 app.upload('/tmp/image.png').then((res) => {
   const params = {
-    app: 6,
+    app: app.appId,
     id: 1,
     record: {
       file: {value: [{fileKey:res.fileKey}]}
